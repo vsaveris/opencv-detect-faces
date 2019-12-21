@@ -97,4 +97,32 @@ class FacesDetectorCV():
 # Demonstration Code
 if __name__ == '__main__':
     
-    pass
+    print('FacesDetectorCV demonstration code.')
+    
+    # Create FacesDetectorCV instance, with default parameters' values
+    fd = FacesDetectorCV()
+    
+    # Run the faces detector for all the test images
+    import glob, os
+    os.chdir('./test_images')
+    
+    for input_image_file in glob.glob('*.jpg'):
+        print('Detecting faces in the input image: ', input_image_file, sep = '')
+    
+        detected_faces = fd.detectFaces(input_image_file)  
+        output_image = cv2.imread(input_image_file)
+    
+        # Create a bounding box and text for each detected face
+        if detected_faces is not None:
+            for (x, y, w, h) in detected_faces:
+                cv2.rectangle(output_image, (x, y), (x + w, y + h), (0, 255, 0), 1)
+                cv2.putText(output_image, 'Face', (x, y + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 0, 0), 1)  
+
+        # Uncomment to show the resulted image during script execution
+        #cv2.imshow('out_' + input_image_file, output_image)
+        #cv2.waitKey(0)
+        
+        # Save the output image
+        cv2.imwrite('../test_result_images/out_' + input_image_file, output_image)
+        print('- Output image saved in: ./test_result_images/out_' + input_image_file)
+        
